@@ -4,7 +4,7 @@ import static java.lang.String.format;
 public final class Debug {
   private Debug(){}
 
-  public static String print2DTable(double[][] vv, boolean columnXrowY, String[] rowItem, String[] colItem, int fractionSize, int minCellSize)
+  public static String print2DTable(double[][] vv, boolean columnXrowY, String[] rowItem, String[] colItem, int fractionSize, int minCellSize4)
   {
     if (vv == null || vv.length == 0) return "";
     if (rowItem == null) rowItem = new String[]{};
@@ -13,9 +13,12 @@ public final class Debug {
     for (int rowY = 0; rowY < vv.length; ++rowY)
       for (int columnX = 0; columnX < vv[rowY].length; ++columnX)
         maxDecimalSize = Math.max(maxDecimalSize,  format("%.0f", vv[rowY][columnX]).length());
+    int maxItemSize = 1;
+    for (int i = 0; i < rowItem.length; ++i) maxItemSize = Math.max(maxItemSize, rowItem[i].length());
+    for (int i = 0; i < colItem.length; ++i) maxItemSize = Math.max(maxItemSize, colItem[i].length());
     fractionSize = Math.max(fractionSize, 0);
-    int cellSize = minCellSize;
-    cellSize = Math.max(cellSize, Math.max((maxDecimalSize+fractionSize+(fractionSize>0?1:0)), 4));
+    int cellSize = minCellSize4 >= 4 ? minCellSize4 : Math.max(maxItemSize, 4);
+    cellSize = Math.max(cellSize, (maxDecimalSize+fractionSize+(fractionSize>0?1:0)));
     StringBuilder sb = new StringBuilder();
     if (columnXrowY)//[columnX][rowY]
     {
